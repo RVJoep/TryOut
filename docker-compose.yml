@@ -1,16 +1,16 @@
 version: '3.3'
 services:
-    valtimo_openzaak:    
+    valtimo_openzaak:
         image: openzaak/open-zaak
         container_name: valtimo_openzaak
         environment:
             - DB_HOST=valtimo_openzaak_postgis
             - SECRET_KEY=veryRestrictedSecretKey
             - DB_USER=openzaak
-            - DB_PASSWORD=openzaak 
+            - DB_PASSWORD=openzaak
             - CACHE_DEFAULT=valtimo_openzaak_redis:6379/0
             - CACHE_AXES=valtimo_openzaak_redis:6379/0
-            - DEBUG=true 
+            - DEBUG=true
             - ALLOWED_HOSTS=localhost,host.docker.internal,172.17.0.1
         ports:
             - 8000:8000
@@ -18,8 +18,8 @@ services:
         image: ritense/valtimo-openzaak-database:0.0.9
         container_name: valtimo_openzaak_postgis
         environment:
-            - POSTGRES_USER=openzaak 
-            - POSTGRES_PASSWORD=openzaak 
+            - POSTGRES_USER=openzaak
+            - POSTGRES_PASSWORD=openzaak
             - POSTGRES_DB=openzaak
     valtimo_openzaak_redis:
         image: redis
@@ -36,7 +36,7 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=demo
             - MYSQL_DATABASE=valtimo
-        ports: 
+        ports:
             - 3306:3306
     valtimo_server:
         image: ritense/valtimo-server:0.0.10
@@ -46,6 +46,12 @@ services:
         environment:
             - KEYCLOAK_HOST=http://${DOCKER_GATEWAY_HOST:-host.docker.internal}:8081
             - KEYCLOAK_SECRET=3ce18f4c-6506-42cf-8e0d-3f98b88635e3
+            - DATABASE_HOST=valtimo_database
+            - DATABASE_PORT=3306
+            - DATABASE_NAME=valtimo
+            - DATABASE_USER=root
+            - DATABASE_PASSWORD=demo
+    
     valtimo_console:
         image: ritense/valtimo-console:0.0.7
         container_name: valtimo_console
